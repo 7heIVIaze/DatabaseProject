@@ -32,33 +32,67 @@
         stmt = conn.createStatement();
 
         // 사용자로부터 입력 받기
-        String inputEmail = request.getParameter("email");
-        String inputPassword = request.getParameter("password");
-
-        if (inputEmail != null && inputPassword != null) {
-            // 입력받은 ID와 비밀번호를 이용하여 데이터베이스에서 검증
-            String query = "SELECT * FROM Client WHERE Email = '" + inputEmail + "' AND password = '" + inputPassword + "'";
-            ResultSet rs = stmt.executeQuery(query);
-
-            if (rs.next()) {
-                // 로그인 성공
-                int id = rs.getInt(1);
-                session.setAttribute("userId", id);
-                session.setAttribute("userType", "client");
-                conn.close();
-				rs.close();
-				stmt.close();
-				script.println("<script type='text/javascript'>");
-				script.println("alert('로그인 성공.');");
-				script.println("</script>");
-        		response.sendRedirect("Home.jsp");
-            } else {
-                // 로그인 실패
-                script.println("<script type='text/javascript'>");
-				script.println("alert('로그인 실패. 이메일 또는 비밀번호를 확인해주세요.');");
-				script.println("history.go(-2);");
-				script.println("</script>");
-            }
+        String type = request.getParameter("type");
+        
+        if("client".equals(type)) {
+	        String inputEmail = request.getParameter("email");
+	        String inputPassword = request.getParameter("password");
+	        if (inputEmail != null && inputPassword != null) {
+	            // 입력받은 ID와 비밀번호를 이용하여 데이터베이스에서 검증
+	            String query = "SELECT * FROM Client WHERE Email = '" + inputEmail + "' AND password = '" + inputPassword + "'";
+	            ResultSet rs = stmt.executeQuery(query);
+	
+	            if (rs.next()) {
+	                // 로그인 성공
+	                int id = rs.getInt(1);
+	                session.setAttribute("userId", id);
+	                session.setAttribute("userType", "client");
+	                conn.close();
+					rs.close();
+					stmt.close();
+					script.println("<script type='text/javascript'>");
+					script.println("alert('로그인 성공.');");
+					script.println("</script>");
+	        		response.sendRedirect("Search.jsp");
+	            } else {
+	                // 로그인 실패
+	                script.println("<script type='text/javascript'>");
+					script.println("alert('로그인 실패. 이메일 또는 비밀번호를 확인해주세요.');");
+					script.println("history.go(-1);");
+					script.println("</script>");
+	            }
+	        }
+        }
+        else if("admin".equals(type)) {
+        	String inputId = request.getParameter("id");
+	        String inputPassword = request.getParameter("password");
+	        
+	        if (inputId != null && inputPassword != null) {
+	            // 입력받은 ID와 비밀번호를 이용하여 데이터베이스에서 검증
+	            int id = Integer.parseInt(inputId);
+	            String query = "SELECT * FROM Hospital WHERE Id = " + id;
+	            ResultSet rs = stmt.executeQuery(query);
+	            
+	            if (rs.next()) {
+	                // 로그인 성공
+	                int hid = rs.getInt(1);
+	                session.setAttribute("userId", hid);
+	                session.setAttribute("userType", "admin");
+	                conn.close();
+					rs.close();
+					stmt.close();
+					script.println("<script type='text/javascript'>");
+					script.println("alert('로그인 성공.');");
+					script.println("</script>");
+	        		response.sendRedirect("Search.jsp");
+	            } else {
+	                // 로그인 실패
+	                script.println("<script type='text/javascript'>");
+					script.println("alert('로그인 실패. 이메일 또는 비밀번호를 확인해주세요.');");
+					script.println("history.go(-1);");
+					script.println("</script>");
+	            }
+	        }
         }
     } catch (Exception ex) {
         ex.printStackTrace();
@@ -77,8 +111,8 @@
     }
 	
 	
-%>
 
+%>
 
 
 </body>

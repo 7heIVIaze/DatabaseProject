@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메디닥</title>
+<title>닥터베이비</title>
 </head>
 <body>
 <div class="container">
@@ -13,7 +13,7 @@
       <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
         <svg class="bi" width="30" height="24"></svg>
       </a>
-      <span class="text-muted">&copy; 2022 Company, Inc</span>
+      <span class="text-muted">&copy; 2023 KNU COMP322, Database Team 4</span>
     </div>
 
     <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

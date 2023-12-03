@@ -30,15 +30,15 @@
 	String address = new String(request.getParameter("address").getBytes("8859_1"), "EUC-KR");
 	String phone = request.getParameter("phone");
 	String password = request.getParameter("password");
-	String password2 = request.getParameter("password2");
-	String regType = new String(request.getParameter("regType"));
+	String regType = (String)session.getAttribute("userType");
+	int id = (Integer)session.getAttribute("userId");
 	
 	String sql = "select Email from client";
 	stmt = conn.createStatement();
 	rs = stmt.executeQuery(sql);
 	
 	
-	int flag = 0; // 1: Áßº¹ Á¸Àç, 2: ÀÌ¸ŞÀÏ ¾øÀ½, 3: ÀÌ¸ŞÀÏ ºñÁ¤»ó, 4: ÀüÈ­¹øÈ£ ¾øÀ½, 5: ÁÖ¼Ò ¾øÀ½, 6: ºñ¹Ğ¹øÈ£ ´Ù¸§, 7: ºñ¹Ğ¹øÈ£ ¾øÀ½
+	int flag = 0; // 1: ì¤‘ë³µ ì¡´ì¬, 2: ì´ë©”ì¼ ì—†ìŒ, 3: ì´ë©”ì¼ ë¹„ì •ìƒ, 4: ì „í™”ë²ˆí˜¸ ì—†ìŒ, 5: ì£¼ì†Œ ì—†ìŒ, 6: ë¹„ë°€ë²ˆí˜¸ ë‹¤ë¦„, 7: ë¹„ë°€ë²ˆí˜¸ ì—†ìŒ
 	
 	if(email.length() == 0){
 		flag = 2;
@@ -50,10 +50,7 @@
 	if(phone.length() == 0) flag = 4;
 	if(address.length() == 0) flag = 5;
 	
-	if(!(password.equals(password2))){
-		flag = 6;
-	}
-	if(password.length() == 0 || password2.length() == 0){
+	if(password.length() == 0){
 		flag = 7;
 	}
 	
@@ -71,88 +68,77 @@
 	if(flag == 1){
 		
 		script.println("<script type='text/javascript'>");
-		script.println("alert('ÀÌ¸ŞÀÏ Áßº¹µË´Ï´Ù. »ç¿ëºÒ°¡´É.');");
+		script.println("alert('ì´ë©”ì¼ ì¤‘ë³µë©ë‹ˆë‹¤. ì‚¬ìš©ë¶ˆê°€ëŠ¥.');");
 		script.println("history.back();");
 		script.println("</script>");		
 	}
 	else if(flag == 2){
 		script.println("<script type='text/javascript'>");
-		script.println("alert('ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä!');");
+		script.println("alert('ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”!');");
 		script.println("history.back();");
 		script.println("</script>");		
 	}
 	else if(flag == 3){
 		script.println("<script type='text/javascript'>");
-		script.println("alert('ÀÌ¸ŞÀÏ Çü½Ä¿¡ ¸ÂÁö ¾Ê½À´Ï´Ù!');");
+		script.println("alert('ì´ë©”ì¼ í˜•ì‹ì— ë§ì§€ ì•ŠìŠµë‹ˆë‹¤!');");
 		script.println("history.back();");
 		script.println("</script>");	
 		
 	}
 	else if(flag == 4){ 
 		script.println("<script type='text/javascript'>");
-		script.println("alert('ÀüÈ­¹øÈ£À» ÀÔ·ÂÇÏ¼¼¿ä!');");
+		script.println("alert('ì „í™”ë²ˆí˜¸ì„ ì…ë ¥í•˜ì„¸ìš”!');");
 		script.println("history.back();");
 		script.println("</script>");
 	}
 	else if(flag == 5){
 		script.println("<script type='text/javascript'>");
-		script.println("alert('ÁÖ¼Ò¸¦ ÀÔ·ÂÇÏ¼¼¿ä!');");
+		script.println("alert('ì£¼ì†Œë¥¼ ì…ë ¥í•˜ì„¸ìš”!');");
 		script.println("history.back();");
 		script.println("</script>");
 	}
 	else if(flag == 6){
 		script.println("<script type='text/javascript'>");
-		script.println("alert('ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù');");
+		script.println("alert('ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤');");
 		script.println("history.back();");
 		script.println("</script>");
 	}
 	else if(flag == 7){
 		script.println("<script type='text/javascript'>");
-		script.println("alert('ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä!');");
+		script.println("alert('ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”!');");
 		script.println("history.back();");
 		script.println("</script>");
 	}
 	else{
 		email = email;
 		if(regType.equals("client")){
-			conn.setAutoCommit(false);//transaction Ãß°¡
+			conn.setAutoCommit(false);//transaction ì¶”ê°€
 			
 			try{
-				String query = "select count(Id) from client";
-				rs = stmt.executeQuery(query);
-				int lateId = 0;
-						
-				while (rs.next()) 
-	            {
-	            	lateId = rs.getInt(1);
-	            	break;
-	            } 
-            	lateId++;
-
-				query = "insert into client values ("
-						+ lateId + ", '"
-						+ password + "', '"
-						+ phone + "', '"
-						+ address + "', '"
-						+ email + "')";
-				
-				int res = stmt.executeUpdate(query);
+				sql = "UPDATE client SET Password = ?, Phone_Number = ?, Address = ?, Email = ? WHERE Id = ?";
+				PreparedStatement updatePwdStmt = conn.prepareStatement(sql);
+				updatePwdStmt.setString(1, password);
+                updatePwdStmt.setString(2, phone);
+                updatePwdStmt.setString(3, address);
+                updatePwdStmt.setString(4, email);
+                updatePwdStmt.setInt(5, id);
+                int res = updatePwdStmt.executeUpdate();
 				stmt.close();
 				conn.close();
 				
 				script.println("<script type='text/javascript'>");
-				script.println("alert('È¸¿ø°¡ÀÔ¿Ï·á');");
-				script.println("history.go(-2);");
+				script.println("alert('ìˆ˜ì •ì™„ë£Œ');");
+				response.sendRedirect("MyPage.jsp");
 				script.println("</script>");
 				
-				conn.commit();//transaction Ãß°¡
+				conn.commit();//transaction ì¶”ê°€
 				conn.setAutoCommit(true);
 				script.flush();
 			}
 			catch(Exception e){
-				conn.rollback(); //trnasaction rollback Ãß°¡
+				conn.rollback(); //trnasaction rollback ì¶”ê°€
 				script.println("<script type='text/javascript'>");
-				script.println("alert('È¸¿ø°¡ÀÔ½ÇÆĞ');");
+				script.println("alert(ìˆ˜ì •ì‹¤íŒ¨');");
 				script.println("history.go(-1);");
 				script.println("</script>");
 				script.flush();
@@ -166,7 +152,7 @@
 			}
 		}
 		else{
-			conn.setAutoCommit(false);//transaction Ãß°¡
+			conn.setAutoCommit(false);//transaction ì¶”ê°€
 			
 			try{
 				String query = "select max(Id) from client";
@@ -192,18 +178,18 @@
 				conn.close();
 				
 				script.println("<script type='text/javascript'>");
-				script.println("alert('È¸¿ø°¡ÀÔ¿Ï·á');");
+				script.println("alert('ìˆ˜ì •ì™„ë£Œ');");
 				script.println("history.go(-2);");
 				script.println("</script>");
 				
-				conn.commit();//transaction Ãß°¡
+				conn.commit();//transaction ì¶”ê°€
 				conn.setAutoCommit(true);
 				script.flush();
 			}
 			catch(Exception e){
-				conn.rollback(); //trnasaction rollback Ãß°¡
+				conn.rollback(); //trnasaction rollback ì¶”ê°€
 				script.println("<script type='text/javascript'>");
-				script.println("alert('È¸¿ø°¡ÀÔ½ÇÆĞ');");
+				script.println("alert('ìˆ˜ì •ì‹¤íŒ¨');");
 				script.println("history.go(-1);");
 				script.println("</script>");
 				script.flush();

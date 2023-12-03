@@ -12,13 +12,13 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://kit.fontawesome.com/7f5811a0ff.js" crossorigin="anonymous"></script>
-
 </head>
 <body>
-<jsp:include page="module/header.jsp" flush="false"/>
 <%
-  	String emailStr=null, pwStr=null;
- %>
+	String user = (String)session.getAttribute("DBID");
+	String pass = (String)session.getAttribute("DBPW");
+%>
+<jsp:include page="module/header.jsp" flush="false"/>
 <section class="container" style="max-width: 560px; padding-top: 20px; height: 500px;">
 	<div class="row" style="padding-bottom: 20px;">
             <a class="navbar-brand text-left col-md-3 patientSignUp" href="ClientLogin.jsp">	
@@ -35,17 +35,15 @@
     </div>
 	<form method="post" action="Login.jsp" style="padding-top: 30px;">
 		<div class="form-floating" style="padding-bottom: 10px;">
-      		<input type="id" class="form-control" id="floatingInput" placeholder="id" name="email"  value= <%=emailStr %>>
+      		<input type="id" class="form-control" id="floatingInput" placeholder="id" name="email">
       		<label for="floatingInput">이메일</label>
     	</div>
     	<div class="form-floating" style="padding-bottom: 10px;">
-      		<input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" value= <%=pwStr %>>
+      		<input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
       		<label for="floatingPassword">비밀번호</label>
     	</div>
-    	<div class="checkbox mb-3">
-    	</div>
     	<button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
-    	<input type=hidden name="action" value="login">
+    	<input type=hidden name="type" value="client">
 	</form>
 </section>
     

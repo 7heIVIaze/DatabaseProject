@@ -7,12 +7,13 @@
 </head>
 <body>
 <%
-	String name = null; //로그인 정보에 따라 해당 계정의 이름 정보를 담는 변수
-	name = (String)session.getAttribute("memName");
+	String id = "ADM-"; //로그인 정보에 따라 해당 계정의 이름 정보를 담는 변수
+	String userId = session.getAttribute("userId").toString();
+	id = id + userId;
 %>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="PageControl.jsp?hosAction=search" style="margin-right: 40px"><img src="img/logo.png" class="img-responsive" alt="로고" width="100px" height="80px"></a>
+    <a class="navbar-brand" href="Home.jsp" style="margin-right: 40px"><img src="img/logo.png" class="img-responsive" alt="로고" width="100px" height="80px"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -31,10 +32,10 @@
        <ul class="nav navbar-nav ml-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown" style="margin-right: 80px">
           <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" style="font-size: 20px; font-weight: 550;"> 
-              <i class="fa-solid fa-circle-user"></i> <%= name %>
+              <i class="fa-solid fa-circle-user"></i> <%= id %>
           </a>
           <ul class="dropdown-menu">
-                <li><a href="module/logoutProcess.jsp" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃</a></li>
+                <li><a href="module/logout.jsp" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃</a></li>
           </ul>
         </li>
       </ul>

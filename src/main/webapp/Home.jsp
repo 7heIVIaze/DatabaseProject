@@ -21,7 +21,31 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://kit.fontawesome.com/7f5811a0ff.js"
 	crossorigin="anonymous"></script>
+<!-- 카카오 지도 -->
+<script type="text/javascript" 
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=350bb2d30c151e9728ef1bc9066bab9a"></script>
 
+<script>
+function clickBtn(){
+	navigator.geolocation.getCurrentPosition(
+			function(position) {
+			console.log("위도 : " + position.coords.latitude);
+			console.log("경도 : " + position.coords.longitude);
+			
+			 var lat= position.coords.latitude;
+             var lng= position.coords.longitude;
+             
+             var latInput = document.forms['searchBar']['lat'];
+             var lngInput = document.forms['searchBar']['lng'];
+             
+             latInput.setAttribute('value',lat);
+             lngInput.setAttribute('value',lng);
+             
+             document.getElementById('searchBar').submit();
+			},
+    );
+}
+</script>
 </head>
 <body>
 <!--
@@ -76,17 +100,17 @@
   			%>
 	<div class="container">
  		<div>
-			<form class="row" action="PageControl.jsp" method="post" id="searchBar">
+			<form class="row" action="Search.jsp" method="post" id="searchBar">
 				<div class="btn-group py-3 col-md-3" role="group"
 				aria-label="Basic outlined example">
-					<input type="radio" class="btn-check" name="search" value="hosname" id="btnradio1" autocomplete="off" checked>
-  					<label class="btn btn-outline-primary" for="btnradio1">병원명</label>
-  					<input type="radio" class="btn-check" name="search" value="department" id="btnradio2" autocomplete="off">
-  					<label class="btn btn-outline-primary" for="btnradio2">진료과</label>
+					<input type="radio" class="btn-check" name="search" value="locname" id="btnradio1" autocomplete="off" checked>
+  					<label class="btn btn-outline-primary" for="btnradio1">지역명</label>
+  					<input type="radio" class="btn-check" name="search" value="hosname" id="btnradio2" autocomplete="off">
+  					<label class="btn btn-outline-primary" for="btnradio2">병원명</label>
 				</div>
 				<div class="search col-md-6 py-3">
 					<div class="Mainsearch">
-						<input type="text" placeholder="병원명, 진료과 별로 검색해보세요 :)"
+						<input type="text" placeholder="지역명, 병원명 별로 검색해보세요 :)"
 							class="Mainsearch searchBar" name="keyword">
 						<button class="Mainsearch icon" onclick="clickBtn()">
 							<i class="fa fa-search"></i>
@@ -110,7 +134,7 @@
 							<th scope="col">번호</th>
 							<th scope="col">병원명</th>
 							<th scope="col">전화번호</th>
-							<th scope="col">진료과</th>
+							<th scope="col">진료의사</th>
 							<th scope="col">진료여부</th>
 							<th scope="col">예약</th>
 						</tr>
@@ -124,12 +148,14 @@
 			<div class="col-md-6">
 				<div id="map" style="width: 100%; height: 500px;"></div>
 				<script>
-					var mapOptions = {
-						center : new naver.maps.LatLng(37.3595704, 127.105399),
-						zoom : 10
-					};
+					var container = document.getElementById('map');
+					var mapOptions = { //지도를 생성할 때 필요한 기본 옵션
+							center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+							level: 5 //지도의 레벨(확대, 축소 정도)
+						};
 
-					var map = new naver.maps.Map('map', mapOptions);
+					var map = new kakao.maps.Map(container, mapOptions);
+					//var map = new kakao.maps.Map('map', mapOptions);
 				</script>
 			</div>
 		</div>

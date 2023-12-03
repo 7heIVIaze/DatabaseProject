@@ -21,7 +21,10 @@
           <a class="nav-link" href="Guide.jsp"><h5><strong>이용안내</strong></h5></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Index.jsp"><h5><strong>예약</strong></h5></a>
+          <a class="nav-link" href="Home.jsp"><h5><strong>예약</strong></h5></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="FindPharmacy.jsp"><h5><strong>약국찾기</strong></h5></a>
         </li>
       </ul>
        <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
