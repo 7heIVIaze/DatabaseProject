@@ -22,4 +22,7 @@ Language : java 1.8.0_391
 IDE : eclipse 2021-9
 
 ******* 주의 사항 *******
-tomcat/lib폴더에 oral18n.jar을 추가하시고 실행해주십시오!
+tomcat/lib폴더에 orai18n.jar을 추가하시고 실행해주십시오!
+project의 class path에도 orai18n.jar을 추가해주십시오!
+추가하지 않으면 다음과 같은 오류가 발생할 수 있습니다.
+ "SQL 오류: 지원되지 않는 문자 집합(클래스 경로에 orai18n.jar 추가): KO16MSWIN949"
