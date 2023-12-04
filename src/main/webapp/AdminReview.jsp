@@ -24,7 +24,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome
 crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="css/MyPageStyles.css">
-<title>마이페이지</title>
+<title>리뷰현황</title>
 </head>
 <body>
 	<% 
@@ -62,17 +62,18 @@ crossorigin="anonymous"></script>
   	%>
   	<div class="container-fluid">
   	  <div class="row justify-content-start">
-			  <jsp:include page="module/MypageSidebar.jsp" flush="false" />
+			  <jsp:include page="module/AdminSidebar.jsp" flush="false" />
 		  	  <div class="col-md-9" style="white-space:nowrap;overflow:scroll;height:500px;">
 		  	  	<table class="table table-hover" style="width:100%;">
 		      		<thead>
 		    			<tr>
-					      <th scope="col">번호</th>
-					      <th scope="col">예약날짜</th>
-					      <th scope="col">병원 이름</th>
-					      <th scope="col">의사 이름</th>
-					      <th scope="col">예약 취소</th>
-					    </tr>
+							<th scope="col">번호</th>
+							<th scope="col">병원명</th>
+							<th scope="col">날짜</th>
+							<th scope="col">점수</th>
+							<th scope="col">리뷰</th>
+							<th scope="col">리뷰삭제</th>
+						</tr>
 					</thead>
 					<tbody>
 						<%
@@ -81,29 +82,42 @@ crossorigin="anonymous"></script>
 					        conn = DriverManager.getConnection(url, user, pass);
 					        conn.setAutoCommit(false);
 					        stmt = conn.createStatement();
-					        
-					        String sql = "select r.id, r.rdate, h.name, r.Dname from Reservation r join hospital h on r.hid = h.id where cid = " + id;
+
+							int i = 1; // 테이블의 번호를 세주는 변수
+							request.setCharacterEncoding("UTF-8");
+							String sql = "select r.rid, h.name, r.rdate, r.rate, r.review from Hospital h join Rating r on h.id = r.hid order by h.id asc, r.rid asc";
+			       			
+							ResultSet rs = stmt.executeQuery(sql);
 							
-					        stmt = conn.createStatement();
-					        int i = 1;
-					        ResultSet rs = stmt.executeQuery(sql);
-					        
-					        while(rs.next()) {
+							while(rs.next()){
 							%>
-							    <tr>
-							      <th scope="row"><%= i++ %></th>
-							      <td><%= rs.getDate(2).toString() %></td>
-							      <td><%= rs.getString(3) %></td>
-							      <td><%= rs.getString(4) %></td>
-							       <form method="post" action="DeleteReservation.jsp" >
-									<input type="hidden" type = "number" name="reserveId" value=<%=rs.getInt(1) %>>
-									<td><button type="submit" class="btn btn-danger btn-sm">예약 삭제</button></td>
-								</form>
-							    </tr>
-							<%
-								}
-						} catch (Exception ex) {
+							<tr>
+								<th scope="row"><%= i %></th>
+								<td><%= rs.getString(2) %></td>
+								<td><%= rs.getDate(3).toString() %></td>
+								<td><%= rs.getInt(4) %></td>
+								<td><%= rs.getString(5) %></td>
+						      <form method="post" action="DeleteReview.jsp" >
+								<input type="hidden" type = "number" name="reviewId" value=<%=rs.getInt(1) %>>
+								<td><button type="submit" class="btn btn-danger btn-sm">리뷰 삭제</button></td>
+							</form>
+						    </tr>
+						<%
+							}
+							rs.close();
+						}catch (Exception ex) {
 					        ex.printStackTrace();
+						} finally {
+							try {
+					            if (stmt != null) {
+					                stmt.close();
+					            }
+					            if (conn != null) {
+					                conn.close();
+					            }
+					        } catch (SQLException e) {
+					            e.printStackTrace();
+					        }
 						}
 						%>
 		  			</tbody>

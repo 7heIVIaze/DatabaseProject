@@ -25,7 +25,7 @@
                 <span class="text-dark h4" style="font-size:15px;">개인 로그인</span>
             </a>
             <a class="navbar-brand text-left col-md-3 hospitalSignUp" href="AdminLogin.jsp">	
-                <span class="text-dark h4" style="font-size:15px;">병원 로그인</span>
+                <span class="text-dark h4" style="font-size:15px;">관리자 로그인</span>
             </a>
     </div>
     <div class="row align-items-center justify-content-between">

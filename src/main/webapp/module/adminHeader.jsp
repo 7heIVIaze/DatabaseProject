@@ -26,7 +26,7 @@
           <a class="nav-link" href="#"><h5><strong>이용안내</strong></h5></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="PageControl.jsp?hosAction=search"><h5><strong>예약현황</strong></h5></a>
+          <a class="nav-link" href="AdminReservation.jsp"><h5><strong>예약현황</strong></h5></a>
         </li>
       </ul>
        <ul class="nav navbar-nav ml-auto mb-2 mb-lg-0">

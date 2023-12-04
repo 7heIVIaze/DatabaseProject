@@ -2,6 +2,7 @@
     pageEncoding="EUC-KR"%>
 <%@ page language = "java" import = "java.text.*, java.sql.*, java.util.*" %>
 <%@ page import="java.io.PrintWriter" %>
+<% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,26 +12,25 @@
 <body>
 
 <%
-	PrintWriter script = response.getWriter();
-
+	PrintWriter pw = response.getWriter();
+	
 	String serverIP = "localhost";
 	String strSID = "orcl";
 	String portNum = "1521";
 	String user = (String)session.getAttribute("DBID");
 	String pass = (String)session.getAttribute("DBPW");
-	String url = "jdbc:oracle:thin:@" + serverIP + ":"
-	+ portNum + ":" + strSID;
-	
+	String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
+
 	Connection conn = null;
 	Statement stmt = null;
+	PreparedStatement pstmt = null;
 	
-
-    try {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        conn = DriverManager.getConnection(url, user, pass);
-        conn.setAutoCommit(false);
-        stmt = conn.createStatement();
-
+	
+	try {
+	    Class.forName("oracle.jdbc.driver.OracleDriver");
+	    conn = DriverManager.getConnection(url, user, pass);
+	    conn.setAutoCommit(false);
+	    stmt = conn.createStatement();
         // 사용자로부터 입력 받기
         int IdHospital = -1; //병원 아이디
 		int Idclient = -1;// 환자 아이디
@@ -67,7 +67,6 @@
 		
 		if (IdHospital == -1 || Idclient == -1 || docName == null || rrn == null || symptom == null || reserveDate == null || namepatient == null)
 		{
-			PrintWriter pw = response.getWriter();
 			out.println(IdHospital + " " + Idclient + " " + docName + " " + rrn + " " + symptom + " " + reserveDate + " " + namepatient);
 			pw.println("<script>");
 			pw.println("alert('입력이 올바르지 않습니다.')");
@@ -93,7 +92,7 @@
 		java.sql.Date date = new java.sql.Date(parsedDate.getTime());
 		
 		sql = "insert into reservation values (?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, nextId);
 		pstmt.setDate(2, date);
 		pstmt.setString(3, docName);
@@ -109,21 +108,17 @@
 		}
 		conn.commit();//transaction 추가
 		pstmt.close();
-		conn.close();
-		stmt.close();
 		conn.setAutoCommit(true);
-		script.flush();
-		
+		pw.flush();
     } catch (Exception ex) {
         ex.printStackTrace();
         out.println("에러 발생: " + ex.getMessage());
         conn.rollback(); //trnasaction rollback 추가
-		script.println("<script type='text/javascript'>");
-		script.println("alert('예약실패');");
-		script.println("history.go(-1);");
-		script.println("</script>");
-		script.flush();
-		e.printStackTrace();
+        pw.println("<script type='text/javascript'>");
+        pw.println("alert('예약실패');");
+        pw.println("history.go(-1);");
+        pw.println("</script>");
+        pw.flush();
     } finally {
         try {
             if (stmt != null) {

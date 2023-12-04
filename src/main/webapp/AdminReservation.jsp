@@ -24,7 +24,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome
 crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="css/MyPageStyles.css">
-<title>마이페이지</title>
+<title>예약현황</title>
 </head>
 <body>
 	<% 
@@ -62,16 +62,17 @@ crossorigin="anonymous"></script>
   	%>
   	<div class="container-fluid">
   	  <div class="row justify-content-start">
-			  <jsp:include page="module/MypageSidebar.jsp" flush="false" />
+			  <jsp:include page="module/AdminSidebar.jsp" flush="false" />
 		  	  <div class="col-md-9" style="white-space:nowrap;overflow:scroll;height:500px;">
 		  	  	<table class="table table-hover" style="width:100%;">
 		      		<thead>
 		    			<tr>
 					      <th scope="col">번호</th>
 					      <th scope="col">예약날짜</th>
+					      <th scope="col">예약자 이메일</th>
+					      <th scope="col">예약 환자 이름</th>
 					      <th scope="col">병원 이름</th>
 					      <th scope="col">의사 이름</th>
-					      <th scope="col">예약 취소</th>
 					    </tr>
 					</thead>
 					<tbody>
@@ -82,7 +83,7 @@ crossorigin="anonymous"></script>
 					        conn.setAutoCommit(false);
 					        stmt = conn.createStatement();
 					        
-					        String sql = "select r.id, r.rdate, h.name, r.Dname from Reservation r join hospital h on r.hid = h.id where cid = " + id;
+					        String sql = "select r.id, r.rdate, h.name, r.Dname, r.Kid_Name, c.email from Reservation r join hospital h on r.hid = h.id join client c on r.cid = c.id order by r.cid";
 							
 					        stmt = conn.createStatement();
 					        int i = 1;
@@ -93,9 +94,11 @@ crossorigin="anonymous"></script>
 							    <tr>
 							      <th scope="row"><%= i++ %></th>
 							      <td><%= rs.getDate(2).toString() %></td>
+							      <td><%= rs.getString(6) %></td>
+							      <td><%= rs.getString(5) %></td>
 							      <td><%= rs.getString(3) %></td>
 							      <td><%= rs.getString(4) %></td>
-							       <form method="post" action="DeleteReservation.jsp" >
+							      <form method="post" action="DeleteReservation.jsp" >
 									<input type="hidden" type = "number" name="reserveId" value=<%=rs.getInt(1) %>>
 									<td><button type="submit" class="btn btn-danger btn-sm">예약 삭제</button></td>
 								</form>

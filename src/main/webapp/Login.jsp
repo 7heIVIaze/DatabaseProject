@@ -69,30 +69,25 @@
 	        
 	        if (inputId != null && inputPassword != null) {
 	            // 입력받은 ID와 비밀번호를 이용하여 데이터베이스에서 검증
-	            int id = Integer.parseInt(inputId);
-	            String query = "SELECT * FROM Hospital WHERE Id = " + id;
-	            ResultSet rs = stmt.executeQuery(query);
-	            
-	            if (rs.next()) {
-	                // 로그인 성공
-	                int hid = rs.getInt(1);
-	                session.setAttribute("userId", hid);
+	            if(inputId.equals("university") && inputPassword.equals("comp322")) {
+	                session.setAttribute("userId", 1);
 	                session.setAttribute("userType", "admin");
 	                conn.close();
-					rs.close();
+					//rs.close();
 					stmt.close();
 					script.println("<script type='text/javascript'>");
 					script.println("alert('로그인 성공.');");
 					script.println("</script>");
 	        		response.sendRedirect("Search.jsp");
-	            } else {
-	                // 로그인 실패
-	                script.println("<script type='text/javascript'>");
-					script.println("alert('로그인 실패. 이메일 또는 비밀번호를 확인해주세요.');");
-					script.println("history.go(-1);");
-					script.println("</script>");
+	            	
 	            }
-	        }
+           	} else {
+                // 로그인 실패
+                script.println("<script type='text/javascript'>");
+				script.println("alert('로그인 실패. 이메일 또는 비밀번호를 확인해주세요.');");
+				script.println("history.go(-1);");
+				script.println("</script>");
+            }
         }
     } catch (Exception ex) {
         ex.printStackTrace();

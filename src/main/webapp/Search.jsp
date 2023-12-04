@@ -187,6 +187,7 @@ function clickBtn(){
 							<th scope="col">전화번호</th>
 							<th scope="col">진료의사</th>
 							<th scope="col">주소</th>
+							<th scope="col">예약여부</th>
 							<th scope="col">예약</th>
 							<th scope="col">리뷰</th>
 						</tr>
@@ -345,7 +346,7 @@ function clickBtn(){
         <h5 class="modal-title" id="exampleModalLabel">병원이름</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="Reservation.jsp" method="get">
+      <form action="Reservation.jsp" method="post">
       <input type=hidden id = "IdHospital" name = "IdHospital" value ="id 가져오기 실패" >	
 	  <input type=hidden id = "Idpatient" name = "Idpatient" value = "<%= id %>" >
       <div class="modal-body">
@@ -406,7 +407,7 @@ function clickBtn(){
 					<tr>
 						<td class="booking_table_list">증상<span>*</span></td>
 						<td>
-							<textarea type="text" name="symptom" id = "symptom" class="treatment_txt_box" style="width: 90%; height: 125px;   resize: none;  outline: 0;" placeholder ="증상 하나마다 엔터 쳐주세요."></textarea>
+							<textarea type="text" name="symptom" id = "symptom" class="treatment_txt_box" style="width: 90%; height: 125px;   resize: none;  outline: 0;" placeholder ="증상 하나마다 ,로 구분해주세요."></textarea>
 						</td>
 					</tr>
 				</tbody>

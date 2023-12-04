@@ -2,7 +2,6 @@
     pageEncoding="EUC-KR"%>
 <%@ page language = "java" import = "java.text.*, java.sql.*, java.util.*" %>
 <%@ page import="java.io.PrintWriter" %>
-<% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,37 +26,51 @@
 	Class.forName("oracle.jdbc.driver.OracleDriver");
 	conn = DriverManager.getConnection(url, user, pass);
 	
-	int id = Integer.parseInt(request.getParameter("id"));
+	String type = (String)session.getAttribute("userType");
+	int userId = (int)session.getAttribute("userId");
+	int rId = Integer.parseInt(request.getParameter("reserveId"));
 
 	conn.setAutoCommit(false);//transaction 추가
 			
 	try{
-		String sql = "delete from kid where cid = " + id;
-		stmt = conn.createStatement();
-		int res = stmt.executeUpdate(sql);
-		
-		
-		sql = "delete from client where id = " + id;
-		stmt = conn.createStatement();
-		res = stmt.executeUpdate(sql);
-		
-		
-		session.removeAttribute("userId");
-		session.removeAttribute("userType");
-		
-		script.println("<script type='text/javascript'>");
-		script.println("alert('회원탈퇴완료');");
-		script.println("location.href='Home.jsp'");
-		script.println("</script>");
-		
-		conn.commit();//transaction 추가
-		conn.setAutoCommit(true);
-		script.flush();
+		if(type.equals("client")) {
+			String sql = "delete from reservation where cid = " + userId + "and id = " + rId;
+			stmt = conn.createStatement();
+			int res = stmt.executeUpdate(sql);
+			
+			if(res > 0) {
+				script.println("<script type='text/javascript'>");
+				script.println("alert('예약삭제완료');");
+				script.println("location.href='MyPage.jsp'");
+				script.println("</script>");
+			}
+			
+			conn.commit();//transaction 추가
+			conn.setAutoCommit(true);
+			script.flush();
+		}
+		else if(type.equals("admin")) {
+			String sql = "delete from reservation where id = " + rId;
+			stmt = conn.createStatement();
+			int res = stmt.executeUpdate(sql);
+			
+			
+			if(res > 0) {
+				script.println("<script type='text/javascript'>");
+				script.println("alert('예약삭제완료');");
+				script.println("location.href='AdminReservation.jsp'");
+				script.println("</script>");
+			}
+			
+			conn.commit();//transaction 추가
+			conn.setAutoCommit(true);
+			script.flush();
+		}
 	}
 	catch(Exception e){
 		conn.rollback(); //trnasaction rollback 추가
 		script.println("<script type='text/javascript'>");
-		script.println("alert('회원탈퇴실패');");
+		script.println("alert('예약삭제실패');");
 		script.println("history.go(-1);");
 		script.println("</script>");
 		script.flush();

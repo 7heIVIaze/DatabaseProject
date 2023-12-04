@@ -49,8 +49,6 @@ display:block; margin: 0px auto;
     <img src="img/Introduction1.png" class="IntroductionPage" style="width: 100%; max-width: auto"><br><br>
 </div>
 <div class="container" style="max-width: 1740px;">
-<img src="img/Introduction2.png" class="IntroductionPage" style="width: 100%"><br><br>
-<img src="img/Introduction3.png" class="IntroductionPage" style="width: 100%">
 <img src="img/Introduction4.png" class="IntroductionPage" style="width: 100%">
 <a href="Home.jsp"><img src="img/Introduction5.png" class="IntroductionPage2"></a><br><br>
 </div>
