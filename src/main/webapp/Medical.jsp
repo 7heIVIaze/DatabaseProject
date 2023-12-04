@@ -27,6 +27,7 @@
         Class.forName("oracle.jdbc.driver.OracleDriver");
         conn = DriverManager.getConnection(URL, USER_UNIVERSITY, USER_PASSWD);
         conn.setAutoCommit(false); // auto-commit disabled
+        conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         stmt = conn.createStatement();
 %>
 

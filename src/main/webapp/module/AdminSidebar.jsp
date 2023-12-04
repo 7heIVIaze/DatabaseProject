@@ -18,6 +18,12 @@
 			          리뷰내역 확인
 			        </a>
 			      </li>
+			      <li>
+			        <a href="AdminQuery.jsp" class="nav-link link-dark">
+			          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+			          쿼리 작성
+			        </a>
+			      </li>
 			    </ul>
 			    <hr>
 </div>

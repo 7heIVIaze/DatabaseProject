@@ -85,6 +85,7 @@
 	
 	else{
 		conn.setAutoCommit(false);//transaction Ãß°¡
+		conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 		
 		try{
 			sql = "insert into kid values ('"

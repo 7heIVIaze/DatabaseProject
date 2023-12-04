@@ -1,0 +1,75 @@
+* 회원 가입, 리뷰 작성, 예약하기, 아이 정보 추가 등 - 트랜잭션 처리
+
+회원 가입, 리뷰 작성, 예약하기, 아이 정보 추가할 때, 가장 최근 id 값의 다음 값을 가져오도록 설정하였습니다.
+이 과정에서 예기치 못한 에러가 발생할 시, 이를 제어하기 위해 Transaction을 구현했습니다.
+ 
+회원 가입의 예로 들겠습니다.
+회원 가입이 성공적으로 진행되었을 때, '회원가입완료'라는 alert이 출력됩니다.
+회원 가입이 실패했을 때, '회원가입실패'라는 alert이 출력되고 executeUpdate된 모든 Query문들을 rollback 시켰습니다.
+
+아래에 코드를 첨부했습니다. (CheckRegister.jsp 118번째 라인부터)
+conn.setAutoCommit(false);//transaction 추가
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			try{
+				String query = "select count(Id) from client";
+				rs = stmt.executeQuery(query);
+				int lateId = 0;
+						
+				while (rs.next()) 
+	            {
+	            	lateId = rs.getInt(1);
+	            	break;
+	            } 
+            	lateId++;
+
+				query = "insert into client values ("
+						+ lateId + ", '"
+						+ password + "', '"
+						+ phone + "', '"
+						+ address + "', '"
+						+ email + "')";
+				
+				int res = stmt.executeUpdate(query);
+				stmt.close();
+				conn.close();
+				
+				script.println("<script type='text/javascript'>");
+				script.println("alert('회원가입완료');");
+				script.println("history.go(-2);");
+				script.println("</script>");
+				
+				conn.commit();//transaction 추가
+				conn.setAutoCommit(true);
+				script.flush();
+			}
+			catch(Exception e){
+				conn.rollback(); //trnasaction rollback 추가
+				script.println("<script type='text/javascript'>");
+				script.println("alert('회원가입실패');");
+				script.println("history.go(-1);");
+				script.println("</script>");
+				script.flush();
+				e.printStackTrace();
+			}
+			
+			finally{
+				stmt.close();
+				conn.close();
+				rs.close();
+			}
+* 동시성 제어
+사용자가 예약을 할 때, 가능 예약 수를 넘어가면 예약이 안되도록 설정을 하였습니다.
+
+각 병원 별로 현재 유저가 예약한 후의 예약 수를 select 문으로 읽어옵니다.
+
+그 수와 가능 예약 수를 비교하여 가능 예약 수를 초과하지 않으면 예약이 가능하도록 설정하였고, 초과하면, 헤당 가게에 예약이 꽉 찼습니다. 라는 메세지를 띄우도록 설정하였습니다.
+
+아래에 코드를 첨부하였습니다.(reservation.jsp 114번째 라인부터)
+if(currentBook <= totalBook) {
+			conn.commit();//transaction 추가
+		} else {
+			conn.rollback();
+			throw new SQLException();
+		}
+먼저 executeUpdate로 쿼리를 실행 한 후, currentBook을 계산해서 totalBook과 비교하여 통과하면 commit 불통하면 rollback하게 설정하였습니다.

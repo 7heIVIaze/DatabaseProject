@@ -31,6 +31,7 @@
         Class.forName("oracle.jdbc.driver.OracleDriver");
         conn = DriverManager.getConnection(url, user, pass);
         conn.setAutoCommit(false);
+        conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         stmt = conn.createStatement();
 
         // 사용자로부터 입력 받기

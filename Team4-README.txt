@@ -10,23 +10,9 @@ Home.jsp 를 통해 실행을 합니다.
 
 로그인 했을시에는 client, admin 두 가지 조건으로 나뉘게 되고, 탭 또한 분리됩니다.
 client는 개인정보변경, 아이 정보 추가/변경, 진료내역확인, 예약확인, 병원 평점 매기기, 병원 예약이 가능합니다.
+예약 관련해서 동시성 제어가 있는데 이는 additionalTask에 추가하였습니다.
 admin은 client의 예약 현황 관리 및 리뷰 내역 관리가 가능합니다.
 
-동시성 제어
-예약을 할 때, 가능 예약 수를 넘어가면 예약이 안되도록 설정을 하였습니다.
-
-각 병원 별로 현재 유저가 예약한 후의 예약 수를 select 문으로 읽어옵니다.
-
-그 수와 가능 예약 수를 비교하여 가능 예약 수를 초과하지 않으면 예약이 가능하도록 설정하였고, 초과하면, 헤당 가게에 예약이 꽉 찼습니다. 라는 메세지를 띄우도록 설정하였습니다.
-
-아래에 코드를 첨부하였습니다.(reservation.jsp 114번째 라인부터)
-if(currentBook <= totalBook)
-		{
-			conn.commit();//transaction 추가
-		} else {
-			conn.rollback();
-			throw new SQLException();
-		}
 
 Applicaiton 제작 환경
 

@@ -124,7 +124,7 @@ crossorigin="anonymous"></script>
 						try {
 							Class.forName("oracle.jdbc.driver.OracleDriver");
 					        conn = DriverManager.getConnection(url, user, pass);
-					        conn.setAutoCommit(false);
+					        
 					        stmt = conn.createStatement();
 					        
 					        String sql = "select rrn, name, sex, age from kid where cid = " + id;

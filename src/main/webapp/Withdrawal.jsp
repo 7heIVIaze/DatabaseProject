@@ -30,6 +30,7 @@
 	int id = Integer.parseInt(request.getParameter("id"));
 
 	conn.setAutoCommit(false);//transaction Ãß°¡
+	conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 	try{
 		String sql = "delete from kid where cid = " + id;

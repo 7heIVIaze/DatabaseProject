@@ -31,6 +31,7 @@
 	int rId = Integer.parseInt(request.getParameter("reserveId"));
 
 	conn.setAutoCommit(false);//transaction Ãß°¡
+	conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 	try{
 		if(type.equals("client")) {

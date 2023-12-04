@@ -116,6 +116,7 @@
 		email = email;
 		if(regType.equals("client")){
 			conn.setAutoCommit(false);//transaction 추가
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 			try{
 				String query = "select count(Id) from client";
@@ -167,6 +168,7 @@
 		}
 		else{
 			conn.setAutoCommit(false);//transaction 추가
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 			try{
 				String query = "select max(Id) from client";
