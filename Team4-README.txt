@@ -23,3 +23,4 @@ IDE : eclipse 2021-9
 
 ******* 주의 사항 *******
 tomcat/lib폴더에 oral18n.jar을 추가하시고 실행해주십시오!
+project의 class path에도 oral18n.jar을 추가해주십시오!
