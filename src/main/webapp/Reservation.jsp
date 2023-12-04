@@ -115,6 +115,19 @@
 		if(currentBook <= totalBook)
 		{
 			conn.commit();//transaction 추가
+			String[] array = symptom.split(",");
+			
+			for(int i = 0; i < array.length; i++) {
+				pstmt.close();
+				sql = "insert into symptom values (?, ?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, nextId);
+				pstmt.setString(2, array[i]);
+				res = pstmt.executeUpdate();
+				conn.commit();
+			}
+			
 		} else {
 			conn.rollback();
 			throw new SQLException();
@@ -123,12 +136,12 @@
 		pw.println("<script type='text/javascript'>");
         pw.println("alert('예약되었습니다');");
         pw.println("</script>");
+		response.sendRedirect("Search.jsp");
         
 		pstmt.close();
 		conn.setAutoCommit(true);
 		pw.flush();
 		
-		response.sendRedirect("Search.jsp");
     } catch (Exception ex) {
         ex.printStackTrace();
         out.println("에러 발생: " + ex.getMessage());
