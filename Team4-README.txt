@@ -1,4 +1,4 @@
-사용방법
+* 사용방법
 Home.jsp 를 통해 실행을 합니다.
 그러면 메인페이지가 뜨게 되는데
 
@@ -13,10 +13,13 @@ client는 개인정보변경, 아이 정보 추가/변경, 진료내역확인, �
 예약 관련해서 동시성 제어가 있는데 이는 additionalTask에 추가하였습니다.
 admin은 client의 예약 현황 관리 및 리뷰 내역 관리가 가능합니다.
 
-
+* 사양
 Applicaiton 제작 환경
 
 OS : Window10/11
 DBMS : Oracle 19.3.0.0.0
 Language : java 1.8.0_391
 IDE : eclipse 2021-9
+
+******* 주의 사항 *******
+tomcat/lib폴더에 oral18n.jar을 추가하시고 실행해주십시오!
