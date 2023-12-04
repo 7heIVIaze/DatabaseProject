@@ -110,10 +110,11 @@ function clickBtn(){
   			
 			Connection conn = null;
 			PreparedStatement pstmt = null;
+			Statement stmt = null;
 			ResultSet rs;
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pass);
-			
+			stmt = conn.createStatement();
 			
 			String memLogin = null; // 로그인 여부에 따라 탑메뉴 보여주는 로직
   			memLogin = (String)session.getAttribute("userType");
@@ -230,7 +231,21 @@ function clickBtn(){
 								<td><%= docName %></td>
 								<td><%= address %></td>
 								<td style="text-overflow: ellipsis; overflow: hidden; max-width: 150px; white-space: nowrap;"></td>
-								<td><span class="badge bg-success">가능</span></td>
+								<%
+								String query = "select count(Id) from reservation where hid = " + hId;
+								
+								ResultSet rs2 = stmt.executeQuery(query);
+								int cnt = 0;
+								while(rs2.next()) {
+									cnt = rs2.getInt(1);
+									break;
+								}
+								
+								if(cnt < 10) {
+								%>
+								<td><span class= "badge bg-success">가능</span></td> <% }  
+								else {%><td><span class= "badge bg-danger">불가능</span></td>
+								<%} %>
 								<td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="transParam('<%=hosName%>','<%=docName%>', '<%= rs.getInt(1) %>')">예약</button></td>
 								<form method="post" action="Review.jsp" >
 									<input type="hidden" type = "number" name="hosId" value=<%=hId%>>
