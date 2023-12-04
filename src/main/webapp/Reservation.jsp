@@ -24,7 +24,7 @@
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement pstmt = null;
-	
+	int totalBook = 10;
 	
 	try {
 	    Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -102,14 +102,32 @@
 		pstmt.setInt(7, Idclient);
 		
 		res = pstmt.executeUpdate();
-		if(res > 0)
-		{
-			response.sendRedirect("Search.jsp");
+		sql = "select count(id) from reservation where hid = " + IdHospital;
+		rs = stmt.executeQuery(sql);
+		int currentBook = 0;
+		while(rs.next()) {
+			currentBook = rs.getInt(1);
+			rs.close();
+			break;
 		}
-		conn.commit();//transaction 추가
+		
+		if(currentBook <= totalBook)
+		{
+			conn.commit();//transaction 추가
+		} else {
+			conn.rollback();
+			throw new SQLException();
+		}
+		
+		pw.println("<script type='text/javascript'>");
+        pw.println("alert('예약되었습니다');");
+        pw.println("</script>");
+        
 		pstmt.close();
 		conn.setAutoCommit(true);
 		pw.flush();
+		
+		response.sendRedirect("Search.jsp");
     } catch (Exception ex) {
         ex.printStackTrace();
         out.println("에러 발생: " + ex.getMessage());
