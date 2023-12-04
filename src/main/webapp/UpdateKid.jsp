@@ -196,26 +196,26 @@ crossorigin="anonymous"></script>
 					<tr>
 						<td class="booking_table_list">주민번호 <span></span></td>
 						<td>
-							<input type="text" class="form-control" id="rrn" name="rrn" placeholder='주민번호'>
+							<input type="text" class="form-control" id="rrn" name="rrn" placeholder='변경할 주민번호'>
 						</td>
 					</tr>
 					<tr>
 						<td class="booking_table_list">이름 <span></span></td>
 						<td>
-							<input type="text" class="form-control" id="name" name="name" placeholder='주민번호'>
+							<input type="text" class="form-control" id="name" name="name" placeholder='변경할 이름'>
 						</td>
 					</tr>
 					<tr>
 						<td class="booking_table_list">성별 <span></span></td>
 						<td>
-							<input type="text" class="form-control" id="sex" name="sex" placeholder='주민번호'>
+							<input type="text" class="form-control" id="sex" name="sex" placeholder='변경할 성별'>
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="booking_table_list">나이<span></span></td>
 						<td>
-							<input type="text" class="form-control" id="age" name="age" placeholder='주민번호'>
+							<input type="text" class="form-control" id="age" name="age" placeholder='변경할 나이'>
 						</td>
 					</tr>
 				</tbody>
